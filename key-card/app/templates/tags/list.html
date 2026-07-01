@@ -2,32 +2,30 @@
 {% block title %}标签管理{% endblock %}
 
 {% block content %}
-<div class="action-bar">
+<div class="page-head">
   <h1 style="margin:0">标签管理</h1>
   <button id="add-tag-btn" role="button">新建标签</button>
 </div>
 
 {% for item in tags %}
-<article>
-  <div class="grid" style="align-items:center">
-    <div>
-      <strong style="font-size:1.05rem">{{ item.tag.name }}</strong>
-      <span style="color:var(--muted-color);margin-left:0.5rem;font-size:0.85rem">{{ item.count }} 张卡片</span>
-    </div>
-    <div style="text-align:right">
-      <button class="secondary rename-btn" data-id="{{ item.tag.id }}" data-name="{{ item.tag.name }}" style="margin-right:0.25rem">重命名</button>
-      <form method="post" action="{{ url_for('tags.delete') }}" class="inline-form"
-            onsubmit="return confirm('确认删除标签「{{ item.tag.name }}」？将从所有卡片中移除。')">
-        <input type="hidden" name="tag_id" value="{{ item.tag.id }}">
-        <button type="submit" class="secondary">删除</button>
-      </form>
-    </div>
+<div class="tag-row">
+  <div class="tag-row-info">
+    <span class="tag-row-name">{{ item.tag.name }}</span>
+    <span class="tag-row-count">{{ item.count }} 张卡片</span>
   </div>
-</article>
+  <div class="tag-row-actions">
+    <button class="secondary rename-btn" data-id="{{ item.tag.id }}" data-name="{{ item.tag.name }}">重命名</button>
+    <form method="post" action="{{ url_for('tags.delete') }}" class="inline-form"
+          onsubmit="return confirm('确认删除标签「{{ item.tag.name }}」？将从所有卡片中移除。')">
+      <input type="hidden" name="tag_id" value="{{ item.tag.id }}">
+      <button type="submit" class="secondary">删除</button>
+    </form>
+  </div>
+</div>
 {% else %}
-<article>
+<div class="empty-state">
   <p>还没有标签。创建卡片时输入新标签会自动创建，或点击「新建标签」。</p>
-</article>
+</div>
 {% endfor %}
 {% endblock %}
 

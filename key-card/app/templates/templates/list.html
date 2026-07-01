@@ -2,25 +2,25 @@
 {% block title %}模板管理{% endblock %}
 
 {% block content %}
-<h1>模板管理</h1>
+<div class="page-head">
+  <h1 style="margin:0">模板管理</h1>
+</div>
 
 <div class="grid">
   {% for t in templates %}
-  <article>
-    <header style="text-align:center">
-      <div style="width:64px;height:64px;background:var(--primary);color:var(--primary-inverse);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;margin:0 auto">
+  <article style="text-align:center">
+    <header>
+      <div style="width:48px;height:48px;background:var(--primary);color:var(--primary-inverse);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;margin:0 auto">
         {{ t.label[:1] }}
       </div>
     </header>
-    <h3 style="text-align:center">{{ t.label }}</h3>
-    <p style="text-align:center;color:var(--muted-color);font-size:0.9rem">{{ t.description }}</p>
-    <footer style="text-align:center">
-      <code>{{ t.name }}</code>
-    </footer>
+    <h3 style="margin-bottom:0.3rem;font-size:1rem">{{ t.label }}</h3>
+    <p class="muted small" style="margin-bottom:0.5rem">{{ t.description }}</p>
+    <footer><code style="font-size:0.8rem">{{ t.name }}</code></footer>
   </article>
   {% else %}
   <article>
-    <p>暂无可用模板。请在 <code>output_templates/</code> 目录下创建模板目录。</p>
+    <p class="empty-hint mb-0">暂无可用模板。请在 <code>output_templates/</code> 目录下创建模板目录。</p>
   </article>
   {% endfor %}
 </div>

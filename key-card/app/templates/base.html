@@ -20,10 +20,10 @@
         </li>
       </ul>
       <ul>
-        <li><a href="{{ url_for('cards.list') }}">卡片管理</a></li>
-        <li><a href="{{ url_for('tags.list') }}">标签管理</a></li>
-        <li><a href="{{ url_for('templates.list') }}">模板管理</a></li>
-        <li><a href="{{ url_for('generate.index') }}">生成网页</a></li>
+        <li><a href="{{ url_for('cards.list') }}"{% if request.path.startswith('/cards') %} style="background:var(--nav-active-bg)"{% endif %}>卡片管理</a></li>
+        <li><a href="{{ url_for('tags.list') }}"{% if request.path.startswith('/tags') %} style="background:var(--nav-active-bg)"{% endif %}>标签管理</a></li>
+        <li><a href="{{ url_for('templates.list') }}"{% if request.path.startswith('/templates') %} style="background:var(--nav-active-bg)"{% endif %}>模板管理</a></li>
+        <li><a href="{{ url_for('generate.index') }}"{% if request.path.startswith('/generate') %} style="background:var(--nav-active-bg)"{% endif %}>生成网页</a></li>
       </ul>
     </nav>
   </header>

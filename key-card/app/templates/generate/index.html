@@ -2,14 +2,14 @@
 {% block title %}生成网页{% endblock %}
 
 {% block content %}
-<h1>生成网页</h1>
+<h1 style="margin-bottom:0.75rem">生成网页</h1>
 
 <form id="generate-form" method="post">
 <div class="generate-grid">
-  <div>
-    <hgroup>
-      <h3>选择卡片</h3>
-    </hgroup>
+
+  {# ====== 左侧：选择卡片 ====== #}
+  <article style="margin-bottom:0">
+    <header><strong>选择卡片</strong></header>
     <input type="text" id="card-filter" placeholder="过滤卡片…" style="margin-bottom:0.4rem">
     <div class="tag-filter">
       {% for tag in tags %}
@@ -19,7 +19,7 @@
       </label>
       {% endfor %}
     </div>
-    <div class="card-select-list">
+    <div class="card-select-list" style="margin-top:0.25rem">
       {% for card in cards %}
       <label class="card-checkbox" data-tags="{{ card.tag_list|map(attribute='name')|join(',') }}">
         <input type="checkbox" name="card_ids" value="{{ card.id }}" class="card-cb">
@@ -27,32 +27,34 @@
       </label>
       {% endfor %}
     </div>
-  </div>
+  </article>
 
+  {# ====== 右侧：模板 + 预览 ====== #}
   <div>
-    <hgroup>
-      <h3>选择模板</h3>
-    </hgroup>
-    {% for t in templates %}
-    <label class="template-radio-item">
-      <input type="radio" name="template" value="{{ t.name }}" {% if loop.first %}checked{% endif %}>
-      <div>
-        <strong>{{ t.label }}</strong>
-        <br><small style="color:var(--muted-color)">{{ t.description }}</small>
-      </div>
-    </label>
-    {% endfor %}
+    <article style="margin-bottom:0.75rem">
+      <header><strong>选择模板</strong></header>
+      {% for t in templates %}
+      <label class="template-radio-item">
+        <input type="radio" name="template" value="{{ t.name }}" {% if loop.first %}checked{% endif %}>
+        <div>
+          <strong>{{ t.label }}</strong>
+          <br><small class="muted">{{ t.description }}</small>
+        </div>
+      </label>
+      {% endfor %}
+    </article>
 
-    <div class="grid" style="margin-bottom:1rem">
+    <div class="grid" style="margin-bottom:0.75rem">
       <button type="button" id="preview-btn">预览</button>
       <button type="button" id="export-btn" class="secondary">导出静态网页</button>
     </div>
 
     <div id="preview-area" style="display:none">
-      <h3>预览</h3>
+      <h3 style="margin-bottom:0.4rem">预览</h3>
       <iframe id="preview-frame"></iframe>
     </div>
   </div>
+
 </div>
 </form>
 {% endblock %}
@@ -63,7 +65,6 @@ const previewBtn = document.getElementById('preview-btn');
 const exportBtn = document.getElementById('export-btn');
 const previewArea = document.getElementById('preview-area');
 const previewFrame = document.getElementById('preview-frame');
-const form = document.getElementById('generate-form');
 
 function getSelectedIds() {
   return Array.from(document.querySelectorAll('.card-cb:checked')).map(cb => cb.value);

@@ -4,14 +4,14 @@
 {% block content %}
 <article>
   <header>
-    <div class="action-bar">
+    <div class="page-head" style="margin:0">
       <h2 style="margin:0">{% if card and card.id %}编辑卡片{% else %}新建卡片{% endif %}</h2>
       <a href="{{ url_for('cards.list') }}" role="button" class="secondary">返回</a>
     </div>
   </header>
 
   {% if error %}
-  <p style="color:var(--del-color)">{{ error }}</p>
+  <p style="color:var(--del-color);margin-bottom:0.5rem">{{ error }}</p>
   {% endif %}
 
   <form method="post">
@@ -32,7 +32,7 @@
         <span class="tag">{{ tag.name }}</span>
       </label>
       {% else %}
-      <p class="empty-hint">暂无标签，请在标签管理中创建。</p>
+      <p class="empty-hint mb-0">暂无标签，请在标签管理中创建。</p>
       {% endfor %}
     </fieldset>
 
