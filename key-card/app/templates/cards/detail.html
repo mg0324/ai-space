@@ -1,31 +1,33 @@
 {% extends "base.html" %}
-{% block title %}{{ card.title }} - 关键卡片{% endblock %}
+{% block title %}{{ card.title }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{{ card.title }}</h1>
-    <div class="header-actions">
-        <a href="{{ url_for('cards.edit', card_id=card.id) }}" class="btn btn-primary">编辑</a>
-        <a href="{{ url_for('cards.list') }}" class="btn btn-secondary">返回</a>
+<article>
+  <header>
+    <div class="action-bar">
+      <h2 style="margin:0">{{ card.title }}</h2>
+      <div class="action-bar-right">
+        <a href="{{ url_for('cards.edit', card_id=card.id) }}" role="button">编辑</a>
+        <a href="{{ url_for('cards.list') }}" role="button" class="secondary">返回</a>
+      </div>
     </div>
-</div>
+  </header>
 
-<div class="detail-meta">
-    {% if card.tag_list %}
-    <div class="detail-tags">
-        {% for tag in card.tag_list %}
-        <span class="tag">{{ tag.name }}</span>
-        {% endfor %}
-    </div>
-    {% endif %}
-    <div class="detail-info">
-        {% if card.source %}<p>来源：{{ card.source }}</p>{% endif %}
-        <p>创建：{{ card.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
-        <p>更新：{{ card.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
-    </div>
-</div>
+  {% if card.tag_list %}
+  <div style="margin-bottom:1rem">
+    {% for tag in card.tag_list %}
+    <span class="tag">{{ tag.name }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
 
-<div class="detail-content">
+  <div style="margin-bottom:1rem;color:var(--muted-color);font-size:0.85rem">
+    {% if card.source %}<p>来源：{{ card.source }}</p>{% endif %}
+    <p>创建：{{ card.created_at.strftime('%Y-%m-%d %H:%M') }} ｜ 更新：{{ card.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+  </div>
+
+  <div style="line-height:1.8">
     {{ card.content | replace('\n', '<br>') | safe }}
-</div>
+  </div>
+</article>
 {% endblock %}

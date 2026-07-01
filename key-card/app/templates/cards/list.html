@@ -1,61 +1,61 @@
 {% extends "base.html" %}
-{% block title %}卡片管理 - 关键卡片{% endblock %}
+{% block title %}卡片管理{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>卡片管理</h1>
-    <div class="header-actions">
-        <a href="{{ url_for('cards.new') }}" class="btn btn-primary">新建卡片</a>
-        <form action="{{ url_for('cards.import_cards') }}" method="post" enctype="multipart/form-data" class="inline-form">
-            <label class="btn btn-secondary">
-                导入 JSON
-                <input type="file" name="file" accept=".json" onchange="this.form.submit()" style="display:none">
-            </label>
-        </form>
-        <a href="{{ url_for('cards.export_cards') }}" class="btn btn-secondary" download>导出 JSON</a>
-    </div>
+<div class="action-bar">
+  <h1 style="margin:0">卡片管理</h1>
+  <div class="action-bar-right">
+    <a href="{{ url_for('cards.new') }}" role="button">新建卡片</a>
+    <form action="{{ url_for('cards.import_cards') }}" method="post" enctype="multipart/form-data" class="inline-form">
+      <label for="import-file" role="button" class="secondary" style="cursor:pointer;margin:0">
+        导入 JSON
+        <input type="file" id="import-file" name="file" accept=".json" onchange="this.form.submit()" hidden>
+      </label>
+    </form>
+    <a href="{{ url_for('cards.export_cards') }}" role="button" class="secondary" download>导出 JSON</a>
+  </div>
 </div>
 
-<form method="get" class="search-bar">
-    <input type="text" name="q" placeholder="搜索卡片..." value="{{ search or '' }}">
-    <select name="tag">
-        <option value="">全部标签</option>
-        {% for tag in tags %}
-        <option value="{{ tag.name }}" {% if current_tag == tag.name %}selected{% endif %}>{{ tag.name }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit" class="btn btn-primary">筛选</button>
+<form method="get" class="grid" style="grid-template-columns:1fr auto auto;margin-top:0.75rem">
+  <input type="text" name="q" placeholder="搜索卡片…" value="{{ search or '' }}">
+  <select name="tag">
+    <option value="">全部标签</option>
+    {% for tag in tags %}
+    <option value="{{ tag.name }}" {% if current_tag == tag.name %}selected{% endif %}>{{ tag.name }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">筛选</button>
 </form>
 
-<div class="card-grid">
-    {% for card in cards %}
-    <div class="card-item">
-        <div class="card-header">
-            <h3><a href="{{ url_for('cards.detail', card_id=card.id) }}">{{ card.title }}</a></h3>
-            <div class="card-meta">
-                <span>{{ card.updated_at.strftime('%Y-%m-%d') }}</span>
-            </div>
-        </div>
-        <div class="card-body">
-            <p>{{ card.content[:100] }}{% if card.content|length > 100 %}...{% endif %}</p>
-        </div>
-        <div class="card-tags">
-            {% for tag in card.tag_list %}
-            <span class="tag">{{ tag.name }}</span>
-            {% endfor %}
-        </div>
-        <div class="card-actions">
-            <a href="{{ url_for('cards.edit', card_id=card.id) }}" class="btn btn-sm">编辑</a>
-            <form action="{{ url_for('cards.delete', card_id=card.id) }}" method="post" class="inline-form"
-                  onsubmit="return confirm('确认删除？')">
-                <button type="submit" class="btn btn-sm btn-danger">删除</button>
-            </form>
-        </div>
+{% for card in cards %}
+<article>
+  <header>
+    <div class="action-bar" style="margin:0">
+      <h3 style="margin:0;font-size:1rem"><a href="{{ url_for('cards.detail', card_id=card.id) }}">{{ card.title }}</a></h3>
+      <small style="white-space:nowrap">{{ card.updated_at.strftime('%Y-%m-%d') }}</small>
     </div>
-    {% else %}
-    <div class="empty-state">
-        <p>还没有卡片，点击"新建卡片"开始吧。</p>
+  </header>
+  <p style="font-size:0.85rem;color:var(--muted-color)">{{ card.content[:120] }}{% if card.content|length > 120 %}…{% endif %}</p>
+  <footer>
+    <div class="action-bar" style="margin:0">
+      <div>
+        {% for tag in card.tag_list %}
+        <span class="tag">{{ tag.name }}</span>
+        {% endfor %}
+      </div>
+      <div>
+        <a href="{{ url_for('cards.edit', card_id=card.id) }}" role="button" class="secondary" style="margin-right:0.25rem">编辑</a>
+        <form action="{{ url_for('cards.delete', card_id=card.id) }}" method="post" class="inline-form"
+              onsubmit="return confirm('确认删除？')">
+          <button type="submit" class="secondary">删除</button>
+        </form>
+      </div>
     </div>
-    {% endfor %}
-</div>
+  </footer>
+</article>
+{% else %}
+<article>
+  <p style="text-align:center;color:var(--muted-color)">还没有卡片，点击「新建卡片」开始吧。</p>
+</article>
+{% endfor %}
 {% endblock %}

@@ -1,31 +1,37 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}关键卡片{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}关键卡片{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pico.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="{{ url_for('cards.list') }}" class="nav-brand">
-                <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo" class="nav-logo">
-                关键卡片
-            </a>
-            <div class="nav-links">
-                <a href="{{ url_for('cards.list') }}">卡片管理</a>
-                <a href="{{ url_for('tags.list') }}">标签管理</a>
-                <a href="{{ url_for('templates.list') }}">模板管理</a>
-                <a href="{{ url_for('generate.index') }}">生成网页</a>
-            </div>
-        </div>
+  <header class="container">
+    <nav>
+      <ul>
+        <li>
+          <a href="{{ url_for('cards.list') }}" class="contrast">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="" class="nav-icon">
+            <strong>关键卡片</strong>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li><a href="{{ url_for('cards.list') }}">卡片管理</a></li>
+        <li><a href="{{ url_for('tags.list') }}">标签管理</a></li>
+        <li><a href="{{ url_for('templates.list') }}">模板管理</a></li>
+        <li><a href="{{ url_for('generate.index') }}">生成网页</a></li>
+      </ul>
     </nav>
+  </header>
 
-    <main class="container">
-        {% block content %}{% endblock %}
-    </main>
-    {% block scripts %}{% endblock %}
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
 </body>
 </html>
