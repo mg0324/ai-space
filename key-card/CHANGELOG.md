@@ -1,5 +1,20 @@
 # 发布日志
 
+## [v0.4] - 2026-07-02
+
+### 变更
+- 按钮尺寸调整为 0.45rem 0.9rem，增加按下缩放反馈
+- 导航栏添加当前页面激活态高亮
+- 新增 `.page-head` / `.page-head-actions` 统一页面标题栏
+- 标签管理页改用 `.tag-row` 轻量行替代 `<article>`
+- 生成页左右栏均用 `<article>` 包裹，风格一致
+- 模板选择项添加选中态高亮
+- 卡片详情页改用 `white-space:pre-wrap` 替代 `replace('\n', '<br>') | safe`
+- 新增 `.card-preview`、`.muted`、`.small`、`.empty-state` 等辅助类
+- 整体间距、边框、阴影精调
+
+---
+
 ## [v0.3] - 2026-07-02
 
 ### 变更
