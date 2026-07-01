@@ -47,8 +47,7 @@
 ## 技术约束
 
 - 语言：Python
-- 框架：Flask
-- 平台：桌面端（本地浏览器访问）
+- 框架：Flask + Vue3 + Element Plus
 - 数据库：SQLite
 - 打包工具：PyInstaller（单文件分发）
 - 部署方式：GitHub Pages、Nginx 等静态服务器

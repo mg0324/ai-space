@@ -68,7 +68,7 @@ nav a:hover {
 
 .page-head-actions {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
 }
@@ -80,10 +80,24 @@ nav a:hover {
   font-size: 0.875rem;
   transition: box-shadow 0.15s, transform 0.1s;
   cursor: pointer;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+/* 标签模拟按钮与真实按钮保持同高同宽 */
+label[role=button] {
+  display: inline-block;
+  line-height: 1.4;
+  text-align: center;
 }
 
 [role=button]:active, button:active {
   transform: scale(0.97);
+}
+
+/* 表单内的按钮与外部按钮对齐 */
+.inline-form button {
+  vertical-align: middle;
 }
 
 /* ===== 表单 ===== */
@@ -256,7 +270,15 @@ article > footer:last-child { margin-bottom: 0; }
 
 .tag-row-actions {
   display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+/* 卡片 footer 操作组 */
+.card-actions {
+  display: flex;
   gap: 0.35rem;
+  align-items: center;
 }
 
 /* ===== 空状态 ===== */

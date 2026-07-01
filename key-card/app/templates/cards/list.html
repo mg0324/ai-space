@@ -43,8 +43,8 @@
         <span class="tag">{{ tag.name }}</span>
         {% endfor %}
       </div>
-      <div>
-        <a href="{{ url_for('cards.edit', card_id=card.id) }}" role="button" class="secondary mr-1">编辑</a>
+      <div class="card-actions">
+        <a href="{{ url_for('cards.edit', card_id=card.id) }}" role="button" class="secondary">编辑</a>
         <form action="{{ url_for('cards.delete', card_id=card.id) }}" method="post" class="inline-form"
               onsubmit="return confirm('确认删除？')">
           <button type="submit" class="secondary">删除</button>
