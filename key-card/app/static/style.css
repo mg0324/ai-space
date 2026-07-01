@@ -26,6 +26,13 @@ body {
     height: 56px;
 }
 
+.nav-logo {
+    width: 28px;
+    height: 28px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
 .nav-brand {
     color: #fff;
     text-decoration: none;
@@ -460,4 +467,66 @@ body {
 /* Inline form */
 .inline-form {
     display: inline;
+}
+
+/* Tag management */
+.tag-mgmt-grid {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.tag-mgmt-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+}
+
+.tag-mgmt-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.tag-lg {
+    font-size: 0.95rem;
+    padding: 0.2rem 0.6rem;
+}
+
+.tag-count {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.tag-mgmt-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Tag select grid in card form */
+.tag-select-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #fafafa;
+    min-height: 2.5rem;
+}
+
+.tag-select-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.empty-hint {
+    color: #bbb;
+    font-size: 0.85rem;
+    font-style: italic;
 }

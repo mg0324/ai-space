@@ -21,7 +21,7 @@
     <select name="tag">
         <option value="">全部标签</option>
         {% for tag in tags %}
-        <option value="{{ tag }}" {% if current_tag == tag %}selected{% endif %}>{{ tag }}</option>
+        <option value="{{ tag.name }}" {% if current_tag == tag.name %}selected{% endif %}>{{ tag.name }}</option>
         {% endfor %}
     </select>
     <button type="submit" class="btn btn-primary">筛选</button>
@@ -40,8 +40,8 @@
             <p>{{ card.content[:100] }}{% if card.content|length > 100 %}...{% endif %}</p>
         </div>
         <div class="card-tags">
-            {% for tag in card.tags.split(',') if card.tags %}
-            <span class="tag">{{ tag.strip() }}</span>
+            {% for tag in card.tag_list %}
+            <span class="tag">{{ tag.name }}</span>
             {% endfor %}
         </div>
         <div class="card-actions">

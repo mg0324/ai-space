@@ -2,34 +2,29 @@ import json
 from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from app import db
-from app.models import Card
+from app.models import Card, Tag
 
 cards_bp = Blueprint('cards', __name__)
 
 
 @cards_bp.route('/')
 def list():
-    tag = request.args.get('tag')
+    tag_name = request.args.get('tag')
     search = request.args.get('q')
     query = Card.query.order_by(Card.updated_at.desc())
 
-    if tag:
-        query = query.filter(Card.tags.contains(tag))
+    if tag_name:
+        query = query.filter(Card.tag_list.any(Tag.name == tag_name))
     if search:
         query = query.filter(
             Card.title.contains(search) | Card.content.contains(search)
         )
 
     cards = query.all()
-    all_tags = set()
-    for c in Card.query.all():
-        for t in c.tags.split(',') if c.tags else []:
-            t = t.strip()
-            if t:
-                all_tags.add(t)
+    all_tags = Tag.query.order_by(Tag.name).all()
 
-    return render_template('cards/list.html', cards=cards, tags=sorted(all_tags),
-                           current_tag=tag, search=search)
+    return render_template('cards/list.html', cards=cards, tags=all_tags,
+                           current_tag=tag_name, search=search)
 
 
 @cards_bp.route('/new', methods=['GET', 'POST'])
@@ -37,40 +32,55 @@ def new():
     if request.method == 'POST':
         title = request.form['title'].strip()
         content = request.form['content'].strip()
-        tags = request.form.get('tags', '').strip()
         source = request.form.get('source', '').strip()
+        tag_ids = request.form.getlist('tag_ids', type=int)
 
         if not title or not content:
+            all_tags = Tag.query.order_by(Tag.name).all()
             return render_template('cards/form.html', error='标题和内容不能为空',
-                                   card=request.form)
+                                   card=request.form, all_tags=all_tags,
+                                   selected_tag_ids=tag_ids)
 
-        card = Card(title=title, content=content, tags=tags, source=source)
+        card = Card(title=title, content=content, source=source)
+        if tag_ids:
+            card.tag_list = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+
         db.session.add(card)
         db.session.commit()
         return redirect(url_for('cards.list'))
 
-    return render_template('cards/form.html', card=None)
+    all_tags = Tag.query.order_by(Tag.name).all()
+    return render_template('cards/form.html', card=None, all_tags=all_tags,
+                           selected_tag_ids=[])
 
 
 @cards_bp.route('/<int:card_id>/edit', methods=['GET', 'POST'])
 def edit(card_id):
     card = Card.query.get_or_404(card_id)
+    all_tags = Tag.query.order_by(Tag.name).all()
 
     if request.method == 'POST':
         card.title = request.form['title'].strip()
         card.content = request.form['content'].strip()
-        card.tags = request.form.get('tags', '').strip()
         card.source = request.form.get('source', '').strip()
-        card.updated_at = datetime.utcnow()
+        tag_ids = request.form.getlist('tag_ids', type=int)
 
         if not card.title or not card.content:
             return render_template('cards/form.html', error='标题和内容不能为空',
-                                   card=card)
+                                   card=card, all_tags=all_tags,
+                                   selected_tag_ids=tag_ids)
+
+        if tag_ids:
+            card.tag_list = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+        else:
+            card.tag_list = []
 
         db.session.commit()
         return redirect(url_for('cards.list'))
 
-    return render_template('cards/form.html', card=card)
+    selected_tag_ids = [t.id for t in card.tag_list]
+    return render_template('cards/form.html', card=card, all_tags=all_tags,
+                           selected_tag_ids=selected_tag_ids)
 
 
 @cards_bp.route('/<int:card_id>/delete', methods=['POST'])
@@ -112,9 +122,21 @@ def import_cards():
         card = Card(
             title=item['title'],
             content=item['content'],
-            tags=item.get('tags', ''),
             source=item.get('source', ''),
         )
+        tag_names = item.get('tags', [])
+        if isinstance(tag_names, str):
+            tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]
+        if tag_names:
+            tags = []
+            for name in tag_names:
+                tag = Tag.query.filter(Tag.name == name).first()
+                if not tag:
+                    tag = Tag(name=name)
+                    db.session.add(tag)
+                tags.append(tag)
+            card.tag_list = tags
+
         db.session.add(card)
         count += 1
 

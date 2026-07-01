@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}关键卡片{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
 </head>
 <body>
     <nav class="nav">
         <div class="nav-inner">
-            <a href="{{ url_for('cards.list') }}" class="nav-brand">关键卡片</a>
+            <a href="{{ url_for('cards.list') }}" class="nav-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo" class="nav-logo">
+                关键卡片
+            </a>
             <div class="nav-links">
                 <a href="{{ url_for('cards.list') }}">卡片管理</a>
+                <a href="{{ url_for('tags.list') }}">标签管理</a>
                 <a href="{{ url_for('templates.list') }}">模板管理</a>
                 <a href="{{ url_for('generate.index') }}">生成网页</a>
             </div>

@@ -14,14 +14,11 @@ generate_bp = Blueprint('generate', __name__)
 def index():
     cards = Card.query.order_by(Card.updated_at.desc()).all()
     templates = get_available_templates()
-    all_tags = set()
-    for c in cards:
-        for t in c.tags.split(',') if c.tags else []:
-            t = t.strip()
-            if t:
-                all_tags.add(t)
+    all_tags = sorted(set(
+        t.name for c in cards for t in c.tag_list
+    ))
     return render_template('generate/index.html', cards=cards,
-                           templates=templates, tags=sorted(all_tags))
+                           templates=templates, tags=all_tags)
 
 
 @generate_bp.route('/preview', methods=['POST'])

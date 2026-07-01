@@ -11,10 +11,10 @@
 </div>
 
 <div class="detail-meta">
-    {% if card.tags %}
+    {% if card.tag_list %}
     <div class="detail-tags">
-        {% for tag in card.tags.split(',') if card.tags %}
-        <span class="tag">{{ tag.strip() }}</span>
+        {% for tag in card.tag_list %}
+        <span class="tag">{{ tag.name }}</span>
         {% endfor %}
     </div>
     {% endif %}

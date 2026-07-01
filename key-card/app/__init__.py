@@ -20,14 +20,16 @@ def create_app(test_config=None):
     from app.routes.templates import templates_bp
     from app.routes.generate import generate_bp
     from app.routes.main import main_bp
+    from app.routes.tags import tags_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(cards_bp, url_prefix='/cards')
     app.register_blueprint(templates_bp, url_prefix='/templates')
     app.register_blueprint(generate_bp, url_prefix='/generate')
+    app.register_blueprint(tags_bp, url_prefix='/tags')
 
     with app.app_context():
-        from app.models import Card
+        from app.models import Card, Tag
         db.create_all()
 
     return app
