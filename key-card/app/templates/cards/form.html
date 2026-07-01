@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{% if card and card.id %}编辑卡片{% else %}新建卡片{% endif %} - 关键卡片{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{% if card and card.id %}编辑卡片{% else %}新建卡片{% endif %}</h1>
+    <a href="{{ url_for('cards.list') }}" class="btn btn-secondary">返回</a>
+</div>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<form method="post" class="card-form">
+    <div class="form-group">
+        <label for="title">标题</label>
+        <input type="text" id="title" name="title" value="{{ card.title or '' }}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="content">内容</label>
+        <textarea id="content" name="content" rows="10" required>{{ card.content or '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="tags">标签（逗号分隔）</label>
+        <input type="text" id="tags" name="tags" value="{{ card.tags or '' }}" placeholder="例如: python, flask, 笔记">
+    </div>
+
+    <div class="form-group">
+        <label for="source">来源</label>
+        <input type="text" id="source" name="source" value="{{ card.source or '' }}" placeholder="例如: 《书名》、视频链接">
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">保存</button>
+        <a href="{{ url_for('cards.list') }}" class="btn btn-secondary">取消</a>
+    </div>
+</form>
+{% endblock %}

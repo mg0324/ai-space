@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}关键卡片{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="{{ url_for('cards.list') }}" class="nav-brand">关键卡片</a>
+            <div class="nav-links">
+                <a href="{{ url_for('cards.list') }}">卡片管理</a>
+                <a href="{{ url_for('templates.list') }}">模板管理</a>
+                <a href="{{ url_for('generate.index') }}">生成网页</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

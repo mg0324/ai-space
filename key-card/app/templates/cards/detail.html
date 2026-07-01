@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ card.title }} - 关键卡片{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ card.title }}</h1>
+    <div class="header-actions">
+        <a href="{{ url_for('cards.edit', card_id=card.id) }}" class="btn btn-primary">编辑</a>
+        <a href="{{ url_for('cards.list') }}" class="btn btn-secondary">返回</a>
+    </div>
+</div>
+
+<div class="detail-meta">
+    {% if card.tags %}
+    <div class="detail-tags">
+        {% for tag in card.tags.split(',') if card.tags %}
+        <span class="tag">{{ tag.strip() }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="detail-info">
+        {% if card.source %}<p>来源：{{ card.source }}</p>{% endif %}
+        <p>创建：{{ card.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p>更新：{{ card.updated_at.strftime('%Y-%m-%d %H:%M') }}</p>
+    </div>
+</div>
+
+<div class="detail-content">
+    {{ card.content | replace('\n', '<br>') | safe }}
+</div>
+{% endblock %}

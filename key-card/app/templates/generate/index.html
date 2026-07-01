@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}生成网页 - 关键卡片{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>生成网页</h1>
+</div>
+
+<form id="generate-form" method="post">
+    <div class="generate-layout">
+        <div class="generate-sidebar">
+            <h3>选择卡片</h3>
+            <div class="filter-tags">
+                <input type="text" id="card-filter" placeholder="过滤卡片..." class="form-input">
+            </div>
+            <div class="tag-filter">
+                {% for tag in tags %}
+                <label class="tag-checkbox">
+                    <input type="checkbox" class="tag-filter-cb" value="{{ tag }}">
+                    <span class="tag">{{ tag }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            <div class="card-select-list">
+                {% for card in cards %}
+                <label class="card-checkbox" data-tags="{{ card.tags }}">
+                    <input type="checkbox" name="card_ids" value="{{ card.id }}" class="card-cb">
+                    <span class="card-cb-title">{{ card.title }}</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="generate-main">
+            <h3>选择模板</h3>
+            <div class="template-select">
+                {% for t in templates %}
+                <label class="template-radio">
+                    <input type="radio" name="template" value="{{ t.name }}" {% if loop.first %}checked{% endif %}>
+                    <div class="template-option">
+                        <strong>{{ t.label }}</strong>
+                        <small>{{ t.description }}</small>
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+
+            <div class="generate-actions">
+                <button type="button" id="preview-btn" class="btn btn-primary">预览</button>
+                <button type="button" id="export-btn" class="btn btn-secondary">导出静态网页</button>
+            </div>
+
+            <div id="preview-area" class="preview-area" style="display:none;">
+                <h3>预览</h3>
+                <iframe id="preview-frame"></iframe>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const previewBtn = document.getElementById('preview-btn');
+const exportBtn = document.getElementById('export-btn');
+const previewArea = document.getElementById('preview-area');
+const previewFrame = document.getElementById('preview-frame');
+const form = document.getElementById('generate-form');
+
+function getSelectedIds() {
+    return Array.from(document.querySelectorAll('.card-cb:checked')).map(cb => cb.value);
+}
+
+function getSelectedTemplate() {
+    const radio = document.querySelector('input[name="template"]:checked');
+    return radio ? radio.value : '';
+}
+
+previewBtn.addEventListener('click', async function() {
+    const cardIds = getSelectedIds();
+    const template = getSelectedTemplate();
+    if (!cardIds.length || !template) {
+        alert('请至少选择一张卡片和一个模板');
+        return;
+    }
+
+    const formData = new FormData();
+    cardIds.forEach(id => formData.append('card_ids', id));
+    formData.append('template', template);
+
+    const resp = await fetch('{{ url_for("generate.preview") }}', {
+        method: 'POST',
+        body: formData
+    });
+    const result = await resp.json();
+    if (result.html) {
+        previewArea.style.display = 'block';
+        previewFrame.srcdoc = result.html;
+    } else {
+        alert(result.error || '生成失败');
+    }
+});
+
+exportBtn.addEventListener('click', async function() {
+    const cardIds = getSelectedIds();
+    const template = getSelectedTemplate();
+    if (!cardIds.length || !template) {
+        alert('请至少选择一张卡片和一个模板');
+        return;
+    }
+
+    const formData = new FormData();
+    cardIds.forEach(id => formData.append('card_ids', id));
+    formData.append('template', template);
+
+    const resp = await fetch('{{ url_for("generate.export") }}', {
+        method: 'POST',
+        body: formData
+    });
+    const result = await resp.json();
+    alert(result.message || result.error);
+});
+
+document.getElementById('card-filter').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('.card-checkbox').forEach(el => {
+        const title = el.querySelector('.card-cb-title').textContent.toLowerCase();
+        el.style.display = title.includes(q) ? '' : 'none';
+    });
+});
+
+document.querySelectorAll('.tag-filter-cb').forEach(cb => {
+    cb.addEventListener('change', function() {
+        const activeTags = Array.from(document.querySelectorAll('.tag-filter-cb:checked'))
+            .map(c => c.value);
+        document.querySelectorAll('.card-checkbox').forEach(el => {
+            if (!activeTags.length) {
+                el.style.display = '';
+                return;
+            }
+            const cardTags = (el.dataset.tags || '').split(',');
+            const match = activeTags.some(t => cardTags.includes(t));
+            el.style.display = match ? '' : 'none';
+        });
+    });
+});
+</script>
+{% endblock %}
