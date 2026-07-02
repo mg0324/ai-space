@@ -1,5 +1,34 @@
+# Python (key-card legacy)
 *.pyc
 __pycache__/
 instance/
 output/
 *.db
+
+# Java
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.jar
+*.war
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Node / Vue
+node_modules/
+dist/
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SQLite (key-card2)
+*.db
+!src/main/resources/schema.sql

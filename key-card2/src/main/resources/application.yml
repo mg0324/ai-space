@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:${user.dir}/data.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+  sql:
+    init:
+      mode: never
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+    livereload:
+      enabled: true
+
+server:
+  port: 8080
+
+app:
+  templates-dir: ${user.dir}/templates/output
+  output-dir: ${user.dir}/output
