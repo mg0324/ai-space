@@ -26,16 +26,12 @@
   - 卡片搜索/筛选
   - 卡片数据导入/导出（JSON / SQLite）
 - **模板管理**
-  - 模板以独立目录组织，热加载，不依赖 Python 包注册（避免 PyInstaller 打包后无法加载）
   - 模板 API 规范：输入卡片数据 → 输出完整 HTML
   - 内置 2–3 个默认模板（笔记、时间线、对照）
 - **网页生成**
   - 选择卡片子集（按标签筛选 / 手动勾选）+ 选择模板
   - 实时预览
   - 导出为独立目录（HTML + CSS + JS），可直接部署
-- **本地管理界面**
-  - 基于 Flask 的浏览器 GUI
-  - PyInstaller 打包为单文件可执行程序，双击启动
 
 ## 非功能需求
 
@@ -46,12 +42,7 @@
 
 ## 技术约束
 
-- 语言：Python
-- 框架：Flask + Vue3 + Element Plus
-- 数据库：SQLite
-- 打包工具：PyInstaller（单文件分发）
+- 语言：Java21
+- 框架：springboot3 + Vue3 + Ant 
+- 数据库：SQLite3
 - 部署方式：GitHub Pages、Nginx 等静态服务器
-
-## 里程碑
-
-- [x] v0.1 — 基础框架：卡片 CRUD、模板系统、网页生成预览
