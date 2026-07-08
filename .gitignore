@@ -32,3 +32,4 @@ Thumbs.db
 # SQLite (key-card2)
 *.db
 !src/main/resources/schema.sql
+key-card2/nul
