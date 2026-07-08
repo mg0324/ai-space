@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_title }}</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f0f2f5; color: #333; line-height: 1.6; padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 1.8rem; margin-bottom: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid #722ed1; }
+        .kanban { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; }
+        .kanban-column {
+            min-width: 280px; flex: 1; background: #fff; border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .kanban-column-header {
+            padding: 1rem; font-weight: 700; font-size: 1rem;
+            border-bottom: 2px solid #f0f0f0; display: flex;
+            align-items: center; gap: 0.5rem;
+        }
+        .kanban-column-header .dot {
+            width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+        }
+        .kanban-column-header .count {
+            margin-left: auto; background: #f0f0f0; color: #666;
+            padding: 0.1rem 0.5rem; border-radius: 10px; font-size: 0.75rem;
+        }
+        .kanban-card {
+            padding: 1rem; margin: 0.75rem; background: #fafafa;
+            border-radius: 6px; border-left: 3px solid #ddd;
+        }
+        .kanban-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #1a1a2e; }
+        .kanban-card .content {
+            font-size: 0.85rem; color: #666; white-space: pre-wrap;
+            max-height: 120px; overflow: hidden;
+        }
+        .kanban-card .meta { margin-top: 0.5rem; font-size: 0.75rem; color: #999; }
+        .kanban-uncategorized { border-left-color: #ccc; }
+        .footer { text-align: center; color: #ccc; font-size: 0.8rem; margin-top: 3rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ site_title }}</h1>
+        <div class="kanban">
+            {{ cards_html }}
+        </div>
+        <div class="footer">由 关键卡片 生成</div>
+    </div>
+</body>
+</html>

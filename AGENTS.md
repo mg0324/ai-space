@@ -73,7 +73,7 @@ npm run build                # 构建前端到 src/main/resources/static/
 
 - 位于 `templates/output/`，每个模板一个目录
 - 包含 `meta.json`（label, description）和 `template.html`
-- 内置三种：note（笔记）、timeline（时间线）、comparison（网格对照）
+- 内置七种：note（笔记）、timeline（时间线）、comparison（网格对照）、faq（问答）、kanban（看板）、gallery（画廊）、mindmap（思维导图）
 - 模板使用 `{{ site_title }}` 和 `{{ cards_html }}` 占位符
 
 ## 注意

@@ -3,6 +3,7 @@
 __pycache__/
 instance/
 output/
+!key-card2/templates/output/
 *.db
 
 # Java
