@@ -72,7 +72,14 @@ public class GenerateService {
             m.put("title", card.getTitle());
             m.put("content", card.getContent());
             m.put("source", card.getSource());
-            m.put("tags", card.getTags().stream().map(t -> t.getName()).collect(Collectors.toList()));
+            m.put("tags", card.getTags().stream()
+                    .map(t -> {
+                        Map<String, String> tagMap = new HashMap<>();
+                        tagMap.put("name", t.getName());
+                        tagMap.put("color", t.getColor());
+                        return tagMap;
+                    })
+                    .collect(Collectors.toList()));
             m.put("created_at", card.getCreatedAt() != null ? card.getCreatedAt().toString() : null);
             m.put("updated_at", card.getUpdatedAt() != null ? card.getUpdatedAt().toString() : null);
             return m;

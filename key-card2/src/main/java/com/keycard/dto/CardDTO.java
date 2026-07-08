@@ -9,7 +9,7 @@ public class CardDTO {
     private String title;
     private String content;
     private String source;
-    private List<String> tags;
+    private List<TagInfo> tags;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -27,8 +27,8 @@ public class CardDTO {
     public String getSource() { return source; }
     public void setSource(String source) { this.source = source; }
 
-    public List<String> getTags() { return tags; }
-    public void setTags(List<String> tags) { this.tags = tags; }
+    public List<TagInfo> getTags() { return tags; }
+    public void setTags(List<TagInfo> tags) { this.tags = tags; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

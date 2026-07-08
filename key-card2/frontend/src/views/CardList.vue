@@ -69,7 +69,7 @@
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'tags'">
-          <a-tag v-for="tag in record.tags" :key="tag" color="blue">{{ tag }}</a-tag>
+          <a-tag v-for="tag in record.tags" :key="tag.name" :color="tag.color || 'blue'">{{ tag.name }}</a-tag>
         </template>
         <template v-if="column.key === 'actions'">
           <a-space size="small">
@@ -101,7 +101,7 @@
           <span><ClockCircleOutlined style="margin-right: 4px" />{{ viewCardData?.updatedAt ? viewCardData.updatedAt.replace('T', ' ').substring(0, 19) : '' }}</span>
         </div>
         <div v-if="viewCardData?.tags?.length" style="margin-bottom: 16px">
-          <a-tag v-for="tag in viewCardData.tags" :key="tag" color="blue">{{ tag }}</a-tag>
+          <a-tag v-for="tag in viewCardData.tags" :key="tag.name" :color="tag.color || 'blue'">{{ tag.name }}</a-tag>
         </div>
         <div style="font-size: 15px; line-height: 1.8; color: #333; white-space: pre-wrap; max-height: 500px; overflow-y: auto">{{ viewCardData?.content }}</div>
       </div>

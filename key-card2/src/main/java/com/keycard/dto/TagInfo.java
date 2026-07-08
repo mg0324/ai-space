@@ -1,13 +1,16 @@
 package com.keycard.dto;
 
-import jakarta.validation.constraints.NotBlank;
+public class TagInfo {
 
-public class TagRequest {
-
-    @NotBlank(message = "标签名不能为空")
     private String name;
-
     private String color;
+
+    public TagInfo() {}
+
+    public TagInfo(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

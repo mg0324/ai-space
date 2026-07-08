@@ -2,6 +2,7 @@ package com.keycard.service;
 
 import com.keycard.dto.CardDTO;
 import com.keycard.dto.CardRequest;
+import com.keycard.dto.TagInfo;
 import com.keycard.entity.Card;
 import com.keycard.entity.Tag;
 import com.keycard.repository.CardRepository;
@@ -93,11 +94,14 @@ public class CardService {
 
             Set<Tag> tags = new HashSet<>();
             if (item.getTags() != null) {
-                for (String tagName : item.getTags()) {
-                    Tag tag = tagRepository.findByName(tagName)
+                for (TagInfo tagInfo : item.getTags()) {
+                    String tagName = tagInfo.getName();
+                    if (tagName == null || tagName.isBlank()) continue;
+                    Tag tag = tagRepository.findByName(tagName.trim())
                             .orElseGet(() -> {
                                 Tag t = new Tag();
-                                t.setName(tagName);
+                                t.setName(tagName.trim());
+                                t.setColor(tagInfo.getColor());
                                 return tagRepository.save(t);
                             });
                     tags.add(tag);
@@ -132,7 +136,10 @@ public class CardService {
         dto.setTitle(card.getTitle());
         dto.setContent(card.getContent());
         dto.setSource(card.getSource());
-        dto.setTags(card.getTags().stream().map(Tag::getName).sorted().collect(Collectors.toList()));
+        dto.setTags(card.getTags().stream()
+                .map(t -> new TagInfo(t.getName(), t.getColor()))
+                .sorted(Comparator.comparing(TagInfo::getName))
+                .collect(Collectors.toList()));
         dto.setCreatedAt(card.getCreatedAt());
         dto.setUpdatedAt(card.getUpdatedAt());
         return dto;

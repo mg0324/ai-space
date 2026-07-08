@@ -81,11 +81,17 @@ public class TemplateService {
     private String renderCardBlock(String templateName, Map<String, Object> card) {
         String tagsHtml = "";
         @SuppressWarnings("unchecked")
-        List<String> tags = (List<String>) card.get("tags");
+        List<Map<String, String>> tags = (List<Map<String, String>>) card.get("tags");
         if (tags != null && !tags.isEmpty()) {
             StringBuilder tagSb = new StringBuilder();
-            for (String tag : tags) {
-                tagSb.append("<span class=\"tag\">").append(escapeHtml(tag)).append("</span>");
+            for (Map<String, String> tag : tags) {
+                String name = tag.get("name");
+                String color = tag.get("color");
+                String style = "";
+                if (color != null && !color.isEmpty()) {
+                    style = " style=\"background:" + escapeHtml(color) + ";color:#fff\"";
+                }
+                tagSb.append("<span class=\"tag\"").append(style).append(">").append(escapeHtml(name)).append("</span>");
             }
             tagsHtml = "<div>" + tagSb + "</div>";
         }

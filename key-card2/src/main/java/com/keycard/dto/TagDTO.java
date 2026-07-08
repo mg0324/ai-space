@@ -4,13 +4,15 @@ public class TagDTO {
 
     private Long id;
     private String name;
+    private String color;
     private long count;
 
     public TagDTO() {}
 
-    public TagDTO(Long id, String name, long count) {
+    public TagDTO(Long id, String name, String color, long count) {
         this.id = id;
         this.name = name;
+        this.color = color;
         this.count = count;
     }
 
@@ -19,6 +21,9 @@ public class TagDTO {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
 
     public long getCount() { return count; }
     public void setCount(long count) { this.count = count; }

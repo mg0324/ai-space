@@ -22,7 +22,7 @@ public class TagService {
     @Transactional(readOnly = true)
     public List<TagDTO> listAll() {
         return tagRepository.findAllByOrderByNameAsc().stream()
-                .map(t -> new TagDTO(t.getId(), t.getName(), tagRepository.countCardsByTagId(t.getId())))
+                .map(t -> new TagDTO(t.getId(), t.getName(), t.getColor(), tagRepository.countCardsByTagId(t.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -34,8 +34,9 @@ public class TagService {
         }
         Tag tag = new Tag();
         tag.setName(name);
+        tag.setColor(request.getColor());
         tagRepository.save(tag);
-        return new TagDTO(tag.getId(), tag.getName(), 0);
+        return new TagDTO(tag.getId(), tag.getName(), tag.getColor(), 0);
     }
 
     @Transactional
@@ -47,8 +48,9 @@ public class TagService {
             throw new RuntimeException("标签名已存在");
         }
         tag.setName(newName);
+        tag.setColor(request.getColor());
         tagRepository.save(tag);
-        return new TagDTO(tag.getId(), tag.getName(), tagRepository.countCardsByTagId(tag.getId()));
+        return new TagDTO(tag.getId(), tag.getName(), tag.getColor(), tagRepository.countCardsByTagId(tag.getId()));
     }
 
     @Transactional

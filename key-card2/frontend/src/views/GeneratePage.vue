@@ -11,14 +11,17 @@
               style="width: 150px"
               @change="filterByTag"
             >
-              <a-select-option v-for="tag in allTags" :key="tag" :value="tag">{{ tag }}</a-select-option>
+              <a-select-option v-for="tag in allTags" :key="tag.name" :value="tag.name">
+                <span v-if="tag.color" :style="{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: tag.color, marginRight: '6px' }" />
+                {{ tag.name }}
+              </a-select-option>
             </a-select>
             <a-button @click="toggleSelectAll">全选/取消</a-button>
           </a-space>
           <a-checkbox-group v-model:value="selectedCardIds" style="width: 100%">
             <div v-for="card in filteredCards" :key="card.id" style="margin-bottom: 8px">
               <a-checkbox :value="card.id">{{ card.title }}</a-checkbox>
-              <a-tag v-for="t in card.tags" :key="t" style="margin-left: 4px" color="blue">{{ t }}</a-tag>
+              <a-tag v-for="t in card.tags" :key="t.name" :color="t.color || 'blue'" style="margin-left: 4px">{{ t.name }}</a-tag>
             </div>
           </a-checkbox-group>
         </a-card>
@@ -66,7 +69,7 @@ const previewHtml = ref('')
 
 const filteredCards = computed(() => {
   if (!filterTag.value) return cards.value
-  return cards.value.filter(c => c.tags.includes(filterTag.value))
+  return cards.value.filter(c => c.tags.some(t => t.name === filterTag.value))
 })
 
 const canGenerate = computed(() => selectedCardIds.value.length > 0 && selectedTemplate.value)
@@ -78,7 +81,11 @@ async function loadData() {
     templateApi.list(),
   ])
   cards.value = cardsRes.data
-  allTags.value = [...new Set(cards.value.flatMap(c => c.tags))].sort()
+  const tagMap = new Map()
+  cards.value.flatMap(c => c.tags).forEach(t => {
+    if (!tagMap.has(t.name)) tagMap.set(t.name, t)
+  })
+  allTags.value = [...tagMap.values()].sort((a, b) => a.name.localeCompare(b.name))
   templates.value = tplRes.data
   if (templates.value.length > 0 && !selectedTemplate.value) {
     selectedTemplate.value = templates.value[0].name

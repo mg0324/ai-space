@@ -16,6 +16,9 @@ public class Tag {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
+    @Column(length = 7)
+    private String color;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -32,6 +35,9 @@ public class Tag {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getColor() { return color; }
+    public void setColor(String color) { this.color = color; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 
